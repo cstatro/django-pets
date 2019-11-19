@@ -16,3 +16,19 @@ class DogList(APIView):
         serializer = DogSerializer()
         dog = serializer.create(request.data)
         return Response(dog)
+
+
+class DogShow(APIView):
+    def get(self, request, num, format=None):
+        dog = Dog.objects.get(id=num)
+        serialized = DogSerializer(dog).data
+        return Response(serialized)
+
+    def patch(self, request, num, format=None):
+        dog = Dog.objects.get(id=num)
+        updated_dog = DogSerializer.update(dog, request.data)
+        return Response(updated_dog)
+
+    def delete(self, request, num, format=None):
+        dog = Dog.objects.get(id=num)
+        return DogSerializer.destroy(dog)
